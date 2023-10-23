@@ -13,35 +13,46 @@ const router = createBrowserRouter([
         element: <Landing />
       },
       {
-        path: '/about',
+        path: 'about',
         element: <About />,
       },
       {
-        path: '/cart',
+        path: 'cart',
         element: <Cart />,
       },
       {
-        path: '/checkout',
+        path: 'checkout',
         element: <Checkout />,
       },
       {
-        path: '/orders',
+        path: 'orders',
         element: <Orders />,
       },
       {
-        path: '/products',
+        path: 'products',
         element: <Products />,
       },
+      {
+        path: 'products:id',
+        element: <SingleProduct />
+      }
     ]
+  },
+  {
+    path: '/login',
+    element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+    errorElement: <Error />,
   }
 ])
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
       <RouterProvider router={router} /> {/*Pass in router configuration to Router Provider */}
     </>
   )
