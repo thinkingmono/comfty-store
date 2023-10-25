@@ -1,7 +1,10 @@
+import { Hero } from "../components/index"
 
 const Landing = () => {
   return (
-    <div>Landing</div>
+    <>
+      <Hero />
+    </>
   )
 }
 
