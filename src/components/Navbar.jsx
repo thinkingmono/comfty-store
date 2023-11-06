@@ -3,6 +3,8 @@ import { FaBarsStaggered } from 'react-icons/fa6';
 import { NavLink } from 'react-router-dom';
 import { NavLinks } from '../components/index'
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { store } from '../store';
 
 /*Available themes object*/
 const themes = {
@@ -18,6 +20,8 @@ const getThemeFromLocalStorage = () => {
 
 const Navbar = () => {
     const [theme, setTheme] = useState(getThemeFromLocalStorage()); /*Setting theme state with theme stored in local storage*/
+    const { numItemsInCart } = useSelector((store) => store.cart);
+    // console.log(numItemsInCart);
 
     /*Toggle theme and set state*/
     const handleTheme = () => {
@@ -56,7 +60,7 @@ const Navbar = () => {
                     <NavLink to='/cart' className='btn btn-ghost btn-circle btn-md ml-4'>
                         <div className="indicator">
                             <BsCart3 className='h-6 w-6' />
-                            <span className="badge badge-sm badge-primary indicator-item">8</span>
+                            <span className="badge badge-sm badge-primary indicator-item">{numItemsInCart}</span>
                         </div>
                     </NavLink>
                 </div>

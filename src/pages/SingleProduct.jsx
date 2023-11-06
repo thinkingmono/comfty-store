@@ -1,6 +1,8 @@
 import { Link, useLoaderData } from "react-router-dom"
 import { authFetch, formatPrice, generateAmountOptions } from "../utils"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { addItem } from "../features/cart/cartSlice"
 
 export const loader = async ({ params }) => {
   const { id } = params;
@@ -12,14 +14,32 @@ export const loader = async ({ params }) => {
 
 const SingleProduct = () => {
   const { product } = useLoaderData();
+  const { id } = product;
   const { image, title, price, description, colors, company } = product.attributes;
   const dollarsAmount = formatPrice(price);
-  const [amount, setAmount] = useState(colors[0]);
-  const [productColor, setProductColor] = useState(1);
+  const [amount, setAmount] = useState(1);
+  const [productColor, setProductColor] = useState(colors[0]);
   // console.log(product);
+  // console.log(amount);
+  const dispatch = useDispatch();
+
+  const cartProduct = {
+    cartId: id + productColor,
+    productId: id,
+    image,
+    title,
+    price,
+    amount,
+    productColor,
+    company
+  }
 
   const handleAmount = (e) => {
     setAmount(parseInt(e.target.value));
+  }
+
+  const addToCart = () => {
+    dispatch(addItem({ product: cartProduct }));
   }
 
   return (
@@ -44,7 +64,7 @@ const SingleProduct = () => {
             <h4 className="text-md font-medium tracking-wider capitalize">Colors</h4>
             <div className="mt-2">
               {colors.map((color) => {
-                return <button type="button" key={color} className={`badge w-6 h-6 mr-2 ${color === productColor && 'border-2 border-secondary' }`} style={{ backgroundColor: color }} onClick={() => setProductColor(color)}></button>
+                return <button type="button" key={color} className={`badge w-6 h-6 mr-2 ${color === productColor && 'border-2 border-secondary'}`} style={{ backgroundColor: color }} onClick={() => setProductColor(color)}></button>
               })}
             </div>
           </div>
@@ -57,7 +77,7 @@ const SingleProduct = () => {
             </select>
           </div>
           <div className="mt-10">
-            <button type="button" className="btn btn-secondary btn-md">Add to bag</button>
+            <button type="button" className="btn btn-secondary btn-md" onClick={addToCart}>Add to bag</button>
           </div>
         </div>
       </div>
