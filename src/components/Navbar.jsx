@@ -2,39 +2,19 @@ import { BsCart3, BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { FaBarsStaggered } from 'react-icons/fa6';
 import { NavLink } from 'react-router-dom';
 import { NavLinks } from '../components/index'
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { store } from '../store';
-
-/*Available themes object*/
-const themes = {
-    winter: 'winter',
-    dracula: 'dracula'
-};
-
-/*Get theme from local storage or returning default winter*/
-const getThemeFromLocalStorage = () => {
-    return localStorage.getItem('theme') || themes.winter;
-}
-
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTheme } from '../features/user/userSlice';
 
 const Navbar = () => {
-    const [theme, setTheme] = useState(getThemeFromLocalStorage()); /*Setting theme state with theme stored in local storage*/
-    const { numItemsInCart } = useSelector((store) => store.cart);
-    // console.log(numItemsInCart);
+    const dispatch = useDispatch();
 
     /*Toggle theme and set state*/
     const handleTheme = () => {
-        const { winter, dracula } = themes;
-        const newTheme = theme === winter ? dracula : winter;
-        setTheme(newTheme);
+        dispatch(toggleTheme());
     }
 
-    /*Set data-theme from root html to selected theme every time theme changes*/
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme])
+    const { numItemsInCart } = useSelector((store) => store.cart);
+    // console.log(numItemsInCart);
 
     return (
         <nav className='bg-base-200'>
