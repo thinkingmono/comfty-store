@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 export const action = (store) => async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  console.log(data);
+  // console.log(data);
   try {
     const response = await authFetch.post('/auth/local', data);
     console.log(response);
