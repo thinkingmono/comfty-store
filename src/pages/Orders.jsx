@@ -3,7 +3,19 @@ import { toast } from "react-toastify";
 import { authFetch } from "../utils";
 import { redirect, useLoaderData } from "react-router-dom";
 
-export const loader = (store) => async ({ request }) => {
+const userOrdersQuery = (queryParams, user) => {
+  return ({
+    queryKey: ['orders', user.username, queryParams.page ? parseInt(queryParams.page) : 1],
+    queryFn: () => authFetch.get('/orders', {
+      params: queryParams,
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    })
+  })
+}
+
+export const loader = (store, queryClient) => async ({ request }) => {
   const user = store.getState().user.user;
   // console.log(user);
   if (!user) {
@@ -13,20 +25,13 @@ export const loader = (store) => async ({ request }) => {
   const params = Object.fromEntries([
     ...new URL(request.url).searchParams.entries()
   ])
-  // console.log(params);
   try {
-    const response = await authFetch.get('/orders', {
-      params,
-      headers: {
-        Authorization: `Bearer ${user.token}`
-      }
-    })
+    const response = await queryClient.ensureQueryData(userOrdersQuery(params, user));
     const { data, meta } = response.data;
-    // console.log(data);
     return { orders: data, meta };
   } catch (error) {
     console.log(error);
-    const errorMsg = error?.response?.data?.message || 'There was an error accessing your orders';
+    const errorMsg = error?.response?.data?.error?.message || 'There was an error accessing your orders';
     toast.error(errorMsg);
     if (error?.response?.status === 401 || 403) return redirect('/login');
     return null;

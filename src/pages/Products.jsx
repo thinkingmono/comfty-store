@@ -1,14 +1,21 @@
+import { QueryClient } from "@tanstack/react-query"
 import { Filters, PaginationContainer, ProductsContainer } from "../components"
 import { authFetch } from "../utils"
 
-export const loader = async ({ request }) => {
+const productsQuery = (queryParams) => {
+  const { search, category, company, sort, price, shipping, page } = queryParams;
+  return ({
+    queryKey: ['products', search ?? '', category ?? 'all', company ?? 'all', sort ?? 'a-z', price ?? 100000, shipping ?? false, page ?? 1],
+    queryFn: () => authFetch('/products', {params: queryParams })
+  })
+
+}
+
+export const loader = (queryClient) => async ({ request }) => {
   const params = Object.fromEntries([
     ...new URL(request.url).searchParams.entries()
-  ]);
-  // console.log(params);
-  const response = await authFetch('/products', { params });
-  // console.log(response.data);
-  // console.log(response.data.data);
+  ])
+  const response = await queryClient.ensureQueryData(productsQuery(params));
   return { products: response.data.data, meta: response.data.meta, params };
 }
 

@@ -5,7 +5,7 @@ import { authFetch, formatPrice } from "../utils";
 import { toast } from "react-toastify";
 import { clearCart } from "../features/cart/cartSlice";
 
-export const action = (store) => async ({ request }) => {
+export const action = (store, queryClient) => async ({ request }) => {
   const formData = await request.formData();
   const { name, address } = Object.fromEntries(formData);
   const user = store.getState().user.user;
@@ -18,15 +18,17 @@ export const action = (store) => async ({ request }) => {
         Authorization: `Bearer ${user.token}`
       }
     });
-    // console.log(response);
+    // Remove orders queries
+    queryClient.removeQueries(['orders']);
+
     store.dispatch(clearCart());
     toast.success('Order Created');
     return redirect('/orders');
   } catch (error) {
     console.log(error);
-    const errorMsg = error?.response?.data?.message || 'There was an error';
+    const errorMsg = error?.response?.data?.error?.message || 'There was an error';
     toast.error(errorMsg);
-    if(error?.response?.status === 401 || 403) return redirect('/login');
+    if (error?.response?.status === 401 || 403) return redirect('/login');
     return null;
   }
 }

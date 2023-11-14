@@ -10,6 +10,17 @@ import { action as registerAction } from './pages/Register'
 import { action as loginAction } from './pages/Login'
 import { action as checkoutAction } from './components/CheckoutForm'
 import { store } from "./store"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5 /*Time react query will preserve queries*/
+    }
+  }
+});
 
 /*Router and routes creation*/
 const router = createBrowserRouter([
@@ -22,7 +33,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
         errorElement: <ErrorElement />,
-        loader: landingLoader
+        loader: landingLoader(queryClient)
       },
       {
         path: 'about',
@@ -36,22 +47,22 @@ const router = createBrowserRouter([
         path: 'checkout',
         element: <Checkout />,
         loader: checkoutLoader(store),
-        action: checkoutAction(store)
+        action: checkoutAction(store, queryClient)
       },
       {
         path: 'orders',
         element: <Orders />,
-        loader: ordersLoader(store)
+        loader: ordersLoader(store, queryClient)
       },
       {
         path: 'products',
         element: <Products />,
-        loader: productsLoader
+        loader: productsLoader(queryClient)
       },
       {
         path: 'products/:id',
         element: <SingleProduct />,
-        loader: singleProductLoader
+        loader: singleProductLoader(queryClient)
       }
     ]
   },
@@ -72,7 +83,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} /> {/*Pass in router configuration to Router Provider */}
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} /> {/*Pass in router configuration to Router Provider */}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   )
 }
