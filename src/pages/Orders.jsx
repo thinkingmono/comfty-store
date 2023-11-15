@@ -1,4 +1,4 @@
-import { OrdersList, SectionTitle, PaginationContainer, ComplexPaginationContainer } from "../components"
+import { OrdersList, SectionTitle, ComplexPaginationContainer } from "../components"
 import { toast } from "react-toastify";
 import { authFetch } from "../utils";
 import { redirect, useLoaderData } from "react-router-dom";

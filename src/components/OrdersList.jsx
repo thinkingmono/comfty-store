@@ -30,7 +30,7 @@ const OrdersList = () => {
                                     <td>{address}</td>
                                     <td>{numItemsInCart}</td>
                                     <td>{orderTotal}</td>
-                                    <td>{day(createdAt).format('hh:mm a - MMM Do, YYYY')}</td>
+                                    <td className="hidden sm:block">{day(createdAt).format('hh:mm a - MMM Do, YYYY')}</td>
                                 </tr>
                             )
                         })}
