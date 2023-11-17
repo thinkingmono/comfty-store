@@ -1,3 +1,4 @@
+//Custom field select.
 const FormSelect = ({ label, name, list, defaultValue, size }) => {
     return (
         <div className="form-control">

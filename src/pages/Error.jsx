@@ -1,8 +1,10 @@
 import { Link, useRouteError } from "react-router-dom"
 
 const Error = () => {
+  //declare error to use route error hook.
   const error = useRouteError();
   console.log(error);
+  //Check if error status is 404. If it is shows a page not found error. if not shows there was an error.
   if (error.status === 404) {
     return (
       <main className="grid min-h-[100vh] place-items-center px-8">

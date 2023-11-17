@@ -1,6 +1,7 @@
 import { useRouteError } from 'react-router-dom'
 
 const ErrorElement = () => {
+    //Error page for Landing page.
     const error = useRouteError();
     console.log(error);
     return (

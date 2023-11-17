@@ -1,3 +1,4 @@
+//Custom checkbox field
 const FormCheckbox = ({label, name, size, defaultValue}) => {
   return (
     <div className="form-control items-center">

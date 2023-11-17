@@ -5,20 +5,29 @@ import { clearCart } from "../features/cart/cartSlice"
 import { useQueryClient } from "@tanstack/react-query"
 
 const Header = () => {
+    //navigate declaration
     const navigate = useNavigate();
+    //dispatch declaration to access store actions.
     const dispatch = useDispatch();
+    //useSelector to capture user from store's user.
     const { user } = useSelector((store) => store.user);
+    //Query client declaration
     const queryClient = useQueryClient();
 
+    //function to handle user's logout.
     const handleLogout = () => {
+        //Navigate to home
         navigate('/');
+        //Clear cart to 0 items
         dispatch(clearCart());
+        //Logout user session.
         dispatch(logoutUser())
-        /*Remove Queries*/
+        /*Remove Cached Queries*/
         queryClient.removeQueries();
     }
 
     return (
+        //Topbar links. Display register and login links or username if there is a user.
         <header className="bg-neutral py-2 text-neutral-content">
             <div className="align-element flex justify-center sm:justify-end">
                 {user ?

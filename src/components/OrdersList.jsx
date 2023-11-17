@@ -1,17 +1,21 @@
 import { useLoaderData } from "react-router-dom"
+//dayjs library to format dates.
 import day from "dayjs";
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 day.extend(advancedFormat);
 
 
 const OrdersList = () => {
+    //Destructure orders and meta data from ordersLoader.
     const { orders, meta } = useLoaderData();
-    // console.log(orders);
     return (
         <div className="mt-8">
+            {/*Total orders*/}
             <h4 className="mb-4 capitalize">Total Orders: {meta.pagination.total}</h4>
+            {/*Orders list*/}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
+                    {/*Table Header*/}
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -21,10 +25,14 @@ const OrdersList = () => {
                             <th className="hidden sm:block">Date</th>
                         </tr>
                     </thead>
+                    {/*Orders List*/}
                     <tbody>
+                        {/*Map through users orders list*/}
                         {orders.map((order) => {
+                            {/*Destructure order parameters from order attributes*/}
                             const { name, address, numItemsInCart, orderTotal, createdAt } = order.attributes;
                             return (
+                                //Order row
                                 <tr key={order.id}>
                                     <td>{name}</td>
                                     <td>{address}</td>

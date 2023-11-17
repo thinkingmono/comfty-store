@@ -13,7 +13,7 @@ import { store } from "./store"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
-
+//Query client creation. Set default query keep time.
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -25,6 +25,7 @@ const queryClient = new QueryClient({
 /*Router and routes creation*/
 const router = createBrowserRouter([
   {
+    //Parent path. enable outlet use to show children and share content.
     path: '/',
     element: <HomeLayout />,
     errorElement: <Error />,
@@ -83,9 +84,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
+    {/*Wrap router provider into query client provider*/}
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} /> {/*Pass in router configuration to Router Provider */}
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </>
   )

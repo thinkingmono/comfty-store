@@ -3,16 +3,19 @@ import { FormInput, SubmitBtn } from "../components/index"
 import { authFetch } from "../utils"
 import { toast } from "react-toastify"
 
+//registerAction triggered as a Register Form's action to create an user in the server.
 export const action = async ({ request }) => {
+  //capture form fields data from request.
   const formData = await request.formData();
+  //turn formData into an object.
   const data = Object.fromEntries(formData);
-  console.log(data);
   try {
+    //Send an API post request to create an user in the server.
     const response = await authFetch.post('/auth/local/register', data);
-    console.log(response);
     toast.success('Account created successfully');
     return redirect('/login');
   } catch (error) {
+    //Error handling
     console.log(error);
     const errorMsg = error?.response?.data?.msg || 'Please check your credentials';
     toast.error(errorMsg);

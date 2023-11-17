@@ -1,4 +1,4 @@
-
+//About page
 const About = () => {
   return (
     <>

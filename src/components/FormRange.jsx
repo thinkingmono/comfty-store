@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { formatPrice } from "../utils";
 
+//Custom range field
 const FormRange = ({ label, name, size, price }) => {
+    //Declaring range field attributes.
     const step = 1000;
     const maxPrice = 100000;
+    //State variable to set current selected price.
     const [selectedPrice, setSelectedPrice] = useState(price || maxPrice);
 
     return (

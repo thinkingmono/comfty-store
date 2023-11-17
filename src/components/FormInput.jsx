@@ -1,4 +1,4 @@
-
+//Custom input field
 const FormInput = ({ label, name, type, defaultValue, size }) => {
     return (
         <div className="form-control">
